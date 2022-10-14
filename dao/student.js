@@ -2,6 +2,7 @@ const db = require('../model/define');
 const {Op} = require('sequelize');
 
 const createStudent = (data)=>{
+    console.log("createStudents: ",data);
     return new Promise((resolve, reject) => {
         db.create(data).then(users => {
             resolve(users);
@@ -26,11 +27,9 @@ const getStudents= ()=>{
 }
 
 const categoryExcellent= (data)=>{
+    console.log("Data: ",data.TotalMArks);
     return new Promise((resolve, reject) => {
         db.findAll({
-            // where : {
-            //     TotalMArks : data.TotalMArks
-            // }
             where: {
                 TotalMArks: {
                   [Op.gte]: 1180 
@@ -46,7 +45,7 @@ const categoryExcellent= (data)=>{
     });
 }
 
-const categoryGood= (data)=>{
+const categoryGood= ()=>{
     return new Promise((resolve, reject) => {
         db.findAll({
             // where : {
@@ -54,7 +53,10 @@ const categoryGood= (data)=>{
             // }
             where: {
                 TotalMArks: {
-                  [Op.gte]: 1150 
+                    [Op.and]: {
+                        [Op.gte]: 1000,
+                        [Op.lt]: 1180
+                    }
                 }
               }
         }).then(users => {
@@ -67,15 +69,12 @@ const categoryGood= (data)=>{
     });
 }
 
-const categoryAverage= (data)=>{
+const categoryAverage= ()=>{
     return new Promise((resolve, reject) => {
         db.findAll({
-            // where : {
-            //     TotalMArks : data.TotalMArks
-            // }
             where: {
                 TotalMArks: {
-                  [Op.gte]: 1100 
+                  [Op.lt]: 1000 
                 }
               }
         }).then(users => {
@@ -87,5 +86,26 @@ const categoryAverage= (data)=>{
         });
     });
 }
+
+/*
+const category= (data)=>{
+    const TotalMArks = data.TotalMArks;
+    return new Promise((resolve, reject) => {
+        db.findAll({
+            where: {
+                TotalMArks: {
+                  [Op.lt]: 1000 
+                }
+              }
+        }).then(users => {
+            resolve(users);
+        }).
+        catch(err => {
+            reject (err);
+            return;
+        });
+    });
+}
+*/
 
 module.exports = { createStudent,getStudents,categoryExcellent,categoryGood,categoryAverage}

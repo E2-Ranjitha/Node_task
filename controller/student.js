@@ -32,19 +32,19 @@ const getStudents = async (req,res)=>{
 
 const category = async (req,res)=>{
     try{
-        const mark = req.body.TotalMArks;
-        if(mark == 'excellent'){
-            const student = await dao.categoryExcellent();
-            res.send(response.successResponse(student,"Students fetched successfully"));
-        }else if(mark == 'good'){
+        const TotalMArks = req.body.TotalMArks ; 
+        //const student = await dao.category(req.body);
+            console.log("MArks: ",TotalMArks);
+        if(TotalMArks == "excellent"){
+            const student = await dao.categoryExcellent(req.body);
+            res.send(response.successResponse(student,"Excellent Students fetched successfully"));
+        }else if(TotalMArks == 'good'){
             const student = await dao.categoryGood();
-            res.send(response.successResponse(student,"Students fetched successfully"));
-        }else if(mark == 'average'){
+            res.send(response.successResponse(student,"Good Students fetched successfully"));
+        }else if(TotalMArks == 'average'){
             const student = await dao.categoryAverage();
-            res.send(response.successResponse(student,"Students fetched successfully"));
+            res.send(response.successResponse(student,"Average Students fetched successfully"));
         }
-        
-        
     }
     catch(err){
         res.send(response.failureResponse("Error while fetching student"));
